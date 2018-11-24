@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-	<title>Wikidata Query Service</title>
+	<title>Inventaire Query Service</title>
 
     <!-- build:css css/style.min.css -->
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
@@ -57,7 +57,7 @@
 						<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 					</button>
 					<div class="navbar-brand">
-						<a href="./"><img width="48" height="31" src="logo.svg"><span></span></a>
+						<a href="./"><img width="36" height="36" src="logo.svg"><span></span></a>
 					</div>
 				</div>
 				<div class="collapse navbar-collapse in" id="header-navbar-collapse">
@@ -426,6 +426,17 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div id="inventaire-query-gui-status">
+		<p><strong>Status</strong>: work in progress</p>
+		<p><strong>TODOs</strong>:</p>
+		<ul>
+			<li>Setup live synchronization (currently only updated manually from a <a href="https://dumps.inventaire.io/inv/latest/">ttl dump</a>, last update: 24/11/2018)</li>
+			<li>Figure-out how to make <code>SERVICE wikibase:label</code> work</li>
+			<li>Figure-out how to make federated queries easier</li>
+			<li>Add implicit prefixes (<code>wd:</code>, <code>wdt:</code>, <code>wikibase:</code>, <code>inv:</code>, etc.)</li>
+		</ul>
 	</div>
 
 	<!-- JS files -->

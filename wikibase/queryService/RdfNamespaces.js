@@ -6,6 +6,10 @@ wikibase.queryService.RdfNamespaces = {};
 	'use strict';
 
 	RdfNamespaces.NAMESPACE_SHORTCUTS = {
+		Inventaire: {
+			inv: 'http://inventaire.io/entity/',
+			invp: 'http://inventaire.io/prop/direct/'
+		},
 		Wikidata: {
 			wikibase: 'http://wikiba.se/ontology#',
 			wd: 'http://www.wikidata.org/entity/',
@@ -48,6 +52,7 @@ wikibase.queryService.RdfNamespaces = {};
 	};
 
 	RdfNamespaces.ENTITY_TYPES = {
+		'http://inventaire.io/prop/direct/': 'property',
 		'http://www.wikidata.org/prop/direct/': 'property',
 		'http://www.wikidata.org/prop/': 'property',
 		'http://www.wikidata.org/prop/novalue/': 'property',
@@ -71,6 +76,8 @@ wikibase.queryService.RdfNamespaces = {};
 	}, {} );
 
 	RdfNamespaces.STANDARD_PREFIXES = {
+		inv: 'PREFIX inv: <http://inventaire.io/entity/>',
+		invp: 'PREFIX invp: <http://inventaire.io/prop/direct/>',
 		wd: 'PREFIX wd: <http://www.wikidata.org/entity/>',
 		wdt: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/>',
 		wikibase: 'PREFIX wikibase: <http://wikiba.se/ontology#>',

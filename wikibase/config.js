@@ -14,7 +14,7 @@ var CONFIG = ( function ( window, $ ) {
 		return null;
 	}
 
-	var root = 'https://query.wikidata.org/';
+	var root = 'https://query.inventaire.io/';
 
 	var configDeploy = {
 		language: getUserLanguage() || 'en',
@@ -38,8 +38,8 @@ var CONFIG = ( function ( window, $ ) {
 				);
 		},
 		brand: {
-			logo: 'logo.svg',
-			title: 'Wikidata Query'
+			logo: 'https://inventaire.io/public/icon/120.png',
+			title: 'Inventaire Query'
 		},
 		location: {
 			root: root,
@@ -56,7 +56,8 @@ var CONFIG = ( function ( window, $ ) {
 		return $.extend( true, {}, configDeploy, {
 			api: {
 				sparql: {
-					uri: 'https://query.wikidata.org/sparql'
+					// uri: 'https://query.wikidata.org/sparql'
+					uri: '/sparql'
 
 				}
 			},
