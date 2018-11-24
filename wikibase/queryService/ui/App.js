@@ -139,12 +139,12 @@ wikibase.queryService.ui.App = ( function( $, window, _, Cookies, moment ) {
 			this._resultView = new wikibase.queryService.ui.ResultView( this._sparqlApi, this._codeSamplesApi, this._editor );
 		}
 
-		this._track( 'init' );
+		// this._track( 'init' );
 
 		this._initApp();
 		this._initEditor();
 		this._initQueryHelper();
-		this._initDataUpdated();
+		// this._initDataUpdated();
 		this._initQuery();
 		this._initRdfNamespaces();
 		this._initHandlers();
