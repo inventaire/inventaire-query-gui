@@ -1049,4 +1049,34 @@ div.jqcloud {
 	padding: 0;
 }
 
-@import 'inventaire_custom';
+// inventaire custom rules
+@font-face {
+	/* stylelint-disable-next-line */
+	src: url(https://inventaire.io/public/fonts/Alegreya-Regular.ttf);
+	font-family: 'Alegreya';
+	font-weight: normal;
+}
+
+@font-face {
+	/* stylelint-disable-next-line */
+	src: url(https://inventaire.io/public/fonts/Alegreya-Bold.ttf);
+	font-family: 'Alegreya';
+	font-weight: bold;
+}
+
+.navbar-brand a span {
+	font-family: 'Alegreya';
+	font-weight: bold;
+	color: #666;
+}
+
+#left-navbar {
+	display: none;
+}
+
+#inventaire-query-gui-status {
+	padding: 1em;
+	margin: 1em;
+	background: #eee;
+	border-radius: 3px;
+}
