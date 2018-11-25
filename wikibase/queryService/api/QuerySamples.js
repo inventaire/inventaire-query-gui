@@ -33,20 +33,7 @@ wikibase.queryService.api.QuerySamples = ( function ( $ ) {
 	 * @return {jQuery.Promise} Object taking list of example queries { title:, query: }
 	 */
 	SELF.prototype.getExamples = function () {
-		var self = this;
-
-		return $.ajax( {
-			url: self._apiEndpoint + encodeURIComponent( self._pageTitle + '/' + self._language ) + '?redirect=false',
-			dataType: 'html'
-		} ).catch( function() {
-			// retry without language
-			return $.ajax( {
-				url: self._apiEndpoint + encodeURIComponent( self._pageTitle ) + '?redirect=false',
-				dataType: 'html'
-			} );
-		} ).then( function ( data ) {
-			return self._parseHTML( data );
-		} );
+		return $.Deferred().resolve(invExamples)
 	};
 
 	/**
