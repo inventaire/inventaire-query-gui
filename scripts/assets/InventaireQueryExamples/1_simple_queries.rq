@@ -1,0 +1,16 @@
+# Simple queries
+
+# Works by Stefan Zweig on Inventaire
+SELECT ?work WHERE {
+  ?work wdt:P50 wd:Q78491 .
+}
+
+###
+
+# Works by Stefan Zweig on Inventaire, their editions, and the ISBN of those editions
+# NB: this doesn't include Stefan Zweig already on Wikidata, and neither their editions
+SELECT ?work ?edition ?isbn WHERE {
+  ?work wdt:P50 wd:Q78491 .
+  ?edition wdt:P629 ?work .
+  OPTIONAL { ?edition wdt:P212 ?isbn . }
+}

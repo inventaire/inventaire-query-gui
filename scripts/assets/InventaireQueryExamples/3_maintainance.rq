@@ -1,0 +1,55 @@
+# Maintainance
+
+# Authors without work
+SELECT ?author WHERE {
+  ?author wdt:P31 wd:Q5 .
+  FILTER NOT EXISTS { ?work wdt:P50 ?author . }
+}
+
+###
+
+# Editions without work
+SELECT ?edition WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
+}
+
+###
+
+# Editions without publisher
+SELECT ?edition WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  FILTER NOT EXISTS { ?edition wdt:P123 ?publisher . }
+}
+
+###
+
+# Editions without language
+SELECT ?edition WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  FILTER NOT EXISTS { ?edition wdt:P407 ?language . }
+}
+
+###
+
+# Editions without ISBN
+SELECT ?edition WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  FILTER NOT EXISTS { ?edition wdt:P212 ?isbn . }
+}
+
+###
+
+# Work without edition
+SELECT ?work WHERE {
+  ?work wdt:P31 wd:Q571 .
+  FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
+}
+
+###
+
+# Work without author
+SELECT ?work WHERE {
+  ?work wdt:P31 wd:Q571 .
+  FILTER NOT EXISTS { ?work wdt:P50 ?author . }
+}

@@ -5,8 +5,9 @@
   "scripts": {
     "start": "http-server -o",
     "test": "grunt test",
-    "build": "grunt build",
-    "deploy": "grunt deploy"
+    "build": "npm run update-inventaire-examples && grunt build",
+    "deploy": "grunt deploy",
+    "update-inventaire-examples": "./scripts/build_inventaire_queries_examples"
   },
   "repository": {
     "type": "git",

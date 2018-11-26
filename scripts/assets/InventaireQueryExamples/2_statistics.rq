@@ -1,0 +1,70 @@
+# Statistics
+
+# Count all the different P31 types
+SELECT ?type (COUNT(?item) AS ?count) WHERE {
+  ?item wdt:P31 ?type .
+}
+GROUP BY ?type
+
+###
+
+# Count the number of claims per property
+SELECT ?type (COUNT(?item) AS ?count) WHERE {
+  ?item wdt:P31 ?type .
+}
+GROUP BY ?type
+
+###
+
+# Count editions per languages
+SELECT ?language (COUNT(?edition) AS ?count) WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  ?edition wdt:P407 ?language .
+}
+GROUP BY ?language
+
+###
+
+# Count editions per publisher
+SELECT ?publisher (COUNT(?edition) AS ?count) WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  ?edition wdt:P123 ?publisher .
+}
+GROUP BY ?publisher
+
+###
+
+# Count works per author
+SELECT ?author (COUNT(?item) AS ?count) WHERE {
+  ?item wdt:P50 ?author .
+}
+GROUP BY ?author
+
+###
+
+# Count all works in the Inventaire database with an author identified in Wikidata
+SELECT (COUNT(?work) AS ?work) WHERE {
+  ?work wdt:P50 ?author .
+  # If we have P31 claims on the author, it's that is in the Inventaire database
+  # This filter wouldn't work in a federated query as we would then be able to access
+  # Wikidata P31 triples
+  FILTER NOT EXISTS { ?author wdt:P31 ?type } .
+}
+
+###
+
+# Count all editions in the Inventaire database with a work identified in Wikidata
+SELECT (COUNT(?edition) AS ?edition) WHERE {
+  ?edition wdt:P629 ?work .
+  # If we have P31 claims on the work, it's that is in the Inventaire database
+  # This filter wouldn't work in a federated query as we would then be able to access
+  # Wikidata P31 triples
+  FILTER NOT EXISTS { ?work wdt:P31 ?type } .
+}
+
+###
+
+# Count all works and series in the Inventaire database with a subject identified in Wikidata
+SELECT (COUNT(?item) AS ?item) WHERE {
+  ?item wdt:P921 ?subject .
+}
