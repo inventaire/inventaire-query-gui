@@ -32,6 +32,14 @@ SELECT ?edition WHERE {
 
 ###
 
+# Editions without cover
+SELECT ?edition WHERE {
+  ?edition wdt:P31 wd:Q3331189 .
+  FILTER NOT EXISTS { ?edition invp:P2 ?cover . }
+}
+
+###
+
 # Editions without ISBN
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .

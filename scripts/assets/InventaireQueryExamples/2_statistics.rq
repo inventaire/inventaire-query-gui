@@ -5,6 +5,7 @@ SELECT ?type (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P31 ?type .
 }
 GROUP BY ?type
+ORDER BY DESC(?count)
 
 ###
 
@@ -13,6 +14,7 @@ SELECT ?type (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P31 ?type .
 }
 GROUP BY ?type
+ORDER BY DESC(?count)
 
 ###
 
@@ -22,6 +24,7 @@ SELECT ?language (COUNT(?edition) AS ?count) WHERE {
   ?edition wdt:P407 ?language .
 }
 GROUP BY ?language
+ORDER BY DESC(?count)
 
 ###
 
@@ -31,6 +34,7 @@ SELECT ?publisher (COUNT(?edition) AS ?count) WHERE {
   ?edition wdt:P123 ?publisher .
 }
 GROUP BY ?publisher
+ORDER BY DESC(?count)
 
 ###
 
@@ -39,6 +43,13 @@ SELECT ?author (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P50 ?author .
 }
 GROUP BY ?author
+
+###
+
+# Count works that are part of a serie
+SELECT (COUNT(?work) AS ?count) WHERE {
+  ?work wdt:P179 ?serie .
+}
 
 ###
 
@@ -68,3 +79,35 @@ SELECT (COUNT(?edition) AS ?edition) WHERE {
 SELECT (COUNT(?item) AS ?item) WHERE {
   ?item wdt:P921 ?subject .
 }
+
+###
+
+# Count all works and series in the Inventaire database with a subject identified in Wikidata
+SELECT (COUNT(?item) AS ?item) WHERE {
+  ?item wdt:P921 ?subject .
+}
+
+###
+
+# Count works per subject
+SELECT ?subject (COUNT(?item) AS ?count) WHERE {
+  ?item wdt:P921 ?subject .
+}
+GROUP BY ?subject
+ORDER BY DESC(?count)
+
+###
+
+# Count all works and series in the Inventaire database with a genre identified in Wikidata
+SELECT (COUNT(?item) AS ?item) WHERE {
+  ?item wdt:P136 ?genre .
+}
+
+###
+
+# Count works per genre
+SELECT ?genre (COUNT(?item) AS ?count) WHERE {
+  ?item wdt:P136 ?genre .
+}
+GROUP BY ?genre
+ORDER BY DESC(?count)
