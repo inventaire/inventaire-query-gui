@@ -33,7 +33,7 @@ wikibase.queryService.api.QuerySamples = ( function ( $ ) {
 	 * @return {jQuery.Promise} Object taking list of example queries { title:, query: }
 	 */
 	SELF.prototype.getExamples = function () {
-		return $.Deferred().resolve(invExamples)
+		return $.Deferred().resolve(window.invExamples);
 	};
 
 	/**

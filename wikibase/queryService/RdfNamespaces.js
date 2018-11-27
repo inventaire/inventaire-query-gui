@@ -8,7 +8,8 @@ wikibase.queryService.RdfNamespaces = {};
 	RdfNamespaces.NAMESPACE_SHORTCUTS = {
 		Inventaire: {
 			inv: 'http://inventaire.io/entity/',
-			invp: 'http://inventaire.io/prop/direct/'
+			invp: 'http://inventaire.io/prop/direct/',
+			invimg: 'http://inventaire.io/img/entities/'
 		},
 		Wikidata: {
 			wikibase: 'http://wikiba.se/ontology#',
@@ -78,6 +79,7 @@ wikibase.queryService.RdfNamespaces = {};
 	RdfNamespaces.STANDARD_PREFIXES = {
 		inv: 'PREFIX inv: <http://inventaire.io/entity/>',
 		invp: 'PREFIX invp: <http://inventaire.io/prop/direct/>',
+		invimg: 'PREFIX invimg: <http://inventaire.io/img/entities/>',
 		wd: 'PREFIX wd: <http://www.wikidata.org/entity/>',
 		wdt: 'PREFIX wdt: <http://www.wikidata.org/prop/direct/>',
 		wikibase: 'PREFIX wikibase: <http://wikiba.se/ontology#>',
