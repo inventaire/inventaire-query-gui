@@ -1,6 +1,8 @@
 # Statistics
 
 # Count all the different P31 types
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?type (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P31 ?type .
 }
@@ -10,6 +12,8 @@ ORDER BY DESC(?count)
 ###
 
 # Count the number of claims per property
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?type (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P31 ?type .
 }
@@ -19,6 +23,8 @@ ORDER BY DESC(?count)
 ###
 
 # Count editions per languages
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?language (COUNT(?edition) AS ?count) WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   ?edition wdt:P407 ?language .
@@ -29,6 +35,8 @@ ORDER BY DESC(?count)
 ###
 
 # Count editions per publisher
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?publisher (COUNT(?edition) AS ?count) WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   ?edition wdt:P123 ?publisher .
@@ -39,6 +47,8 @@ ORDER BY DESC(?count)
 ###
 
 # Count works per author
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?author (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P50 ?author .
 }
@@ -47,6 +57,8 @@ GROUP BY ?author
 ###
 
 # Count works that are part of a serie
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?work) AS ?count) WHERE {
   ?work wdt:P179 ?serie .
 }
@@ -54,6 +66,8 @@ SELECT (COUNT(?work) AS ?count) WHERE {
 ###
 
 # Count all works in the Inventaire database with an author identified in Wikidata
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?work) AS ?work) WHERE {
   ?work wdt:P50 ?author .
   # If we have P31 claims on the author, it's that is in the Inventaire database
@@ -65,6 +79,8 @@ SELECT (COUNT(?work) AS ?work) WHERE {
 ###
 
 # Count all editions in the Inventaire database with a work identified in Wikidata
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?edition) AS ?edition) WHERE {
   ?edition wdt:P629 ?work .
   # If we have P31 claims on the work, it's that is in the Inventaire database
@@ -76,6 +92,8 @@ SELECT (COUNT(?edition) AS ?edition) WHERE {
 ###
 
 # Count all works and series in the Inventaire database with a subject identified in Wikidata
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?item) AS ?item) WHERE {
   ?item wdt:P921 ?subject .
 }
@@ -83,6 +101,8 @@ SELECT (COUNT(?item) AS ?item) WHERE {
 ###
 
 # Count all works and series in the Inventaire database with a subject identified in Wikidata
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?item) AS ?item) WHERE {
   ?item wdt:P921 ?subject .
 }
@@ -90,6 +110,8 @@ SELECT (COUNT(?item) AS ?item) WHERE {
 ###
 
 # Count works per subject
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?subject (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P921 ?subject .
 }
@@ -99,6 +121,8 @@ ORDER BY DESC(?count)
 ###
 
 # Count all works and series in the Inventaire database with a genre identified in Wikidata
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT (COUNT(?item) AS ?item) WHERE {
   ?item wdt:P136 ?genre .
 }
@@ -106,6 +130,8 @@ SELECT (COUNT(?item) AS ?item) WHERE {
 ###
 
 # Count works per genre
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?genre (COUNT(?item) AS ?count) WHERE {
   ?item wdt:P136 ?genre .
 }

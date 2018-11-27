@@ -1,6 +1,8 @@
 # Simple queries
 
 # Works by Stefan Zweig on Inventaire
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?work WHERE {
   ?work wdt:P50 wd:Q78491 .
 }
@@ -9,6 +11,8 @@ SELECT ?work WHERE {
 
 # Works by Stefan Zweig on Inventaire, their editions, and the ISBN of those editions
 # NB: this doesn't include Stefan Zweig already on Wikidata, and neither their editions
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?work ?edition ?isbn WHERE {
   ?work wdt:P50 wd:Q78491 .
   ?edition wdt:P629 ?work .
