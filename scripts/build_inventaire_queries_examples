@@ -12,7 +12,7 @@ const parseExample = categoryLabel => example => {
 }
 
 const getCategoryExamples = categoryFilename => {
-  const lines = fs.readFileSync(`./scripts/assets/InventaireQueryExamples/${categoryFilename}`)
+  const lines = fs.readFileSync(`./scripts/InventaireQueryExamples/${categoryFilename}`)
     .toString()
     .split('\n')
 
@@ -23,7 +23,7 @@ const getCategoryExamples = categoryFilename => {
   .map(parseExample(categoryLabel))
 }
 
-const examples = fs.readdirSync('scripts/assets/InventaireQueryExamples')
+const examples = fs.readdirSync('scripts/InventaireQueryExamples')
   .map(getCategoryExamples)
 
 const flattenExamples = [].concat(...examples)
