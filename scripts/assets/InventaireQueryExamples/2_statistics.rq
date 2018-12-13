@@ -14,10 +14,10 @@ ORDER BY DESC(?count)
 # Count the number of claims per property
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?type (COUNT(?item) AS ?count) WHERE {
-  ?item wdt:P31 ?type .
+SELECT ?property (COUNT(?item) AS ?count) WHERE {
+  ?item ?property ?value .
 }
-GROUP BY ?type
+GROUP BY ?property
 ORDER BY DESC(?count)
 
 ###
