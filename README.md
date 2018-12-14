@@ -1,6 +1,6 @@
-# Wikibase Query Service GUI
+# Inventaire Query Service GUI
 
-This repository contains the GUI for the [Wikidata Query Service](https://query.wikidata.org/).
+This repository is a fork of [Wikidata Query GUI](https://github.com/wikimedia/wikidata-query-gui).
 
 Please see more details about the service in the [User Manual](https://www.mediawiki.org/wiki/Wikidata_query_service/User_Manual).
 
@@ -9,7 +9,7 @@ Please see more details about the service in the [User Manual](https://www.media
 Clone git repo, go into created folder and then pull all dependencies via npm package manager.
 
 ```bash
-$ git clone https://gerrit.wikimedia.org/r/wikidata/query/gui
+$ git clone https://github.com/inventaire/inventaire-query-gui
 $ cd gui
 $ npm install
 ```
@@ -54,6 +54,19 @@ $ npm run deploy
 Please make sure you have defined a gitreview username:
 ```bash
 git config --global --add gitreview.username "[username]"
+```
+
+## With Docker
+
+Build Dockerfile
+
+```bash
+docker build -t query-gui-app .
+```
+Run it on port 8080
+
+```bash
+docker run -it -p 8080:8080 --name query-gui-script query-gui-app
 ```
 
 
