@@ -16,6 +16,7 @@ wikibase.queryService.RdfNamespaces = {};
 			wd: 'http://www.wikidata.org/entity/',
 			wdt: 'http://www.wikidata.org/prop/direct/',
 			wds: 'http://www.wikidata.org/entity/statement/',
+			wdq: 'https://query.wikidata.org/bigdata/namespace/wdq/',
 			p: 'http://www.wikidata.org/prop/',
 			wdref: 'http://www.wikidata.org/reference/',
 			wdv: 'http://www.wikidata.org/value/',
