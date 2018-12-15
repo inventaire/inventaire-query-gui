@@ -3,8 +3,24 @@
 # Works by Stefan Zweig on Inventaire
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT ?work WHERE {
   ?work wdt:P50 wd:Q78491 .
+}
+
+###
+
+# Works by Stefan Zweig on Wikidata and Inventaire
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wdq: <https://query.wikidata.org/bigdata/namespace/wdq/>
+
+SELECT ?work WHERE {
+  {
+    ?work wdt:P50 wd:Q78491 .
+  } UNION {
+    SERVICE wdq:sparql { ?work wdt:P50 wd:Q78491 . }
+  }
 }
 
 ###
@@ -13,6 +29,7 @@ SELECT ?work WHERE {
 # NB: this doesn't include Stefan Zweig already on Wikidata, and neither their editions
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT ?work ?edition ?isbn WHERE {
   ?work wdt:P50 wd:Q78491 .
   ?edition wdt:P629 ?work .
@@ -21,14 +38,14 @@ SELECT ?work ?edition ?isbn WHERE {
 
 ###
 
-# Number of editions per year
-#defaultView:LineChart
+# Works by Stefan Zweig on Wikidata and Inventaire, their editions, and the ISBN of those editions
+# NB: this doesn't include Stefan Zweig already on Wikidata, and neither their editions
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wdq: <https://query.wikidata.org/bigdata/namespace/wdq/>
 
-SELECT ?year (COUNT(?edition) AS ?count) WHERE {
-  ?edition wdt:P31 wd:Q3331189 ;
-           wdt:P577 ?publication_date .
-  BIND(str(YEAR(?publication_date)) AS ?year)
+SELECT ?work ?edition ?isbn WHERE {
+  { ?work wdt:P50 wd:Q78491 . } UNION { SERVICE wdq:sparql { ?work wdt:P50 wd:Q78491 . } }
+  { ?edition wdt:P629 ?work . } UNION { SERVICE wdq:sparql { ?edition wdt:P629 ?work . } }
+  OPTIONAL { ?edition wdt:P212 ?isbn . }
 }
-GROUP BY ?year
