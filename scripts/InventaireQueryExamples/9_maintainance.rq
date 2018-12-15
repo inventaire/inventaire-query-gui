@@ -1,8 +1,6 @@
 # Maintainance
 
 # Authors without work
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?author WHERE {
   ?author wdt:P31 wd:Q5 .
   FILTER NOT EXISTS { ?work wdt:P50 ?author . }
@@ -11,8 +9,6 @@ SELECT ?author WHERE {
 ###
 
 # Editions without work
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
@@ -21,8 +17,6 @@ SELECT ?edition WHERE {
 ###
 
 # Editions without publisher
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   FILTER NOT EXISTS { ?edition wdt:P123 ?publisher . }
@@ -31,8 +25,6 @@ SELECT ?edition WHERE {
 ###
 
 # Editions without language
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   FILTER NOT EXISTS { ?edition wdt:P407 ?language . }
@@ -41,8 +33,6 @@ SELECT ?edition WHERE {
 ###
 
 # Editions without cover
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   FILTER NOT EXISTS { ?edition invp:P2 ?cover . }
@@ -51,8 +41,6 @@ SELECT ?edition WHERE {
 ###
 
 # Editions without ISBN
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?edition WHERE {
   ?edition wdt:P31 wd:Q3331189 .
   FILTER NOT EXISTS { ?edition wdt:P212 ?isbn . }
@@ -61,8 +49,6 @@ SELECT ?edition WHERE {
 ###
 
 # Work without edition
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?work WHERE {
   ?work wdt:P31 wd:Q571 .
   FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
@@ -71,8 +57,6 @@ SELECT ?work WHERE {
 ###
 
 # Work without author
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?work WHERE {
   ?work wdt:P31 wd:Q571 .
   FILTER NOT EXISTS { ?work wdt:P50 ?author . }

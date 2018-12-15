@@ -2,9 +2,6 @@
 
 # Number of editions per year
 #defaultView:LineChart
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-
 SELECT ?year (COUNT(?edition) AS ?count) WHERE {
   ?edition wdt:P31 wd:Q3331189 ;
            wdt:P577 ?publication_date .

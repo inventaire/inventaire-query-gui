@@ -126,6 +126,41 @@ wikibase.queryService.api.Sparql = ( function( $ ) {
 		return deferred;
 	};
 
+	function addPrefix ( query, prefix, url ) {
+		var prefixHeader = 'PREFIX ' + prefix + ': <' + url + '>\n';
+		return prefixHeader + query;
+	}
+
+	function hasPrefix ( query, prefix ) {
+		var re = new RegExp( 'PREFIX ' + prefix + ': <.*>', 'i');
+		return query.match(re) !== null;
+	}
+
+	var prefixPattern = /\W+(\w+):\w+/g;
+
+	function findUsedPrefixes ( query ) {
+		var usedPrefixes = [];
+		var match = prefixPattern.exec( query );
+		// Get all capture groups (See https://stackoverflow.com/a/38889424)
+		while ( match ) {
+			var prefix = match[1];
+			if ( usedPrefixes.indexOf( prefix ) === -1 ) {
+				usedPrefixes.push(match[1]);
+			}
+			match = prefixPattern.exec( query );
+		}
+		return usedPrefixes;
+	}
+	function addMissingPrefixes ( query ) {
+		findUsedPrefixes( query ).forEach(function ( prefix ) {
+			var url = wikibase.queryService.RdfNamespaces.ALL_PREFIXES[prefix];
+			if ( url && !hasPrefix( query, prefix ) ) {
+				query = addPrefix( query, prefix, url );
+			}
+		});
+		return query;
+	}
+
 	/**
 	 * Submit a query to the API
 	 *
@@ -137,7 +172,9 @@ wikibase.queryService.api.Sparql = ( function( $ ) {
 		var self = this;
 
 		query = this._replaceAutoLanguage( query );
-		return this._replaceAutoCoordinates( query ).then( function( query ) {
+		return this._replaceAutoCoordinates( query )
+		.then( addMissingPrefixes )
+		.then( function( query ) {
 				return self._query( query, timeout );
 		} );
 	};
