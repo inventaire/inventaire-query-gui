@@ -61,3 +61,18 @@ SELECT ?work WHERE {
   ?work wdt:P31 wd:Q571 .
   FILTER NOT EXISTS { ?work wdt:P50 ?author . }
 }
+
+###
+
+# type of Wikidata entities used by Inventaire items
+SELECT ?type ?typeLabel (COUNT(?item) AS ?count ) WHERE {
+  hint:Query hint:optimizer "None".
+  ?item wdt:P1574 ?entity .
+  FILTER(STRSTARTS(STR(?entity), 'http://www.wikidata.org/entity/Q')) .
+  SERVICE wdq:sparql {
+    ?entity wdt:P31 ?type .
+    ?type rdfs:label ?typeLabel .
+    FILTER(LANG(?typeLabel) = "en") .
+  }
+}
+GROUP BY ?type ?typeLabel
