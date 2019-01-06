@@ -3,7 +3,8 @@
 # Authors without work
 SELECT ?author WHERE {
   ?author wdt:P31 wd:Q5 .
-  FILTER NOT EXISTS { ?work wdt:P50 ?author . }
+  # '?property' may be: wdt:P50, wdt:P2679, or wdt:P2680
+  FILTER NOT EXISTS { ?work ?property ?author . }
 }
 
 ###
