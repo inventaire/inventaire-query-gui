@@ -64,6 +64,14 @@ SELECT ?work WHERE {
 
 ###
 
+# Author without work
+SELECT ?author WHERE {
+  ?author wdt:P31 wd:Q5 .
+  FILTER NOT EXISTS { ?work wdt:P50 ?author . }
+}
+
+###
+
 # type of Wikidata entities used by Inventaire items
 SELECT ?type ?typeLabel (COUNT(?item) AS ?count ) WHERE {
   hint:Query hint:optimizer "None".
