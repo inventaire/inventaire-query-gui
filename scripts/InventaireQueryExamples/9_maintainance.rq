@@ -94,4 +94,14 @@ SELECT ?author ?label WHERE {
   ?author wdt:P31 wd:Q5 .
   ?author rdfs:label ?label .
   FILTER(REGEX(STR(?label), "[^a-zA-Z\\d\\s:\u00C0-\u024F'.-]", 'i')) .
-}
+
+###
+
+# Authors that aren't used in any claim and where never edited
+# Recommanded admin action: delete
+SELECT ?author WHERE {
+  ?author wdt:P31 wd:Q5 ;
+          schema:version "2"^^xsd:integer ;
+          wikibase:labels "1"^^xsd:integer ;
+          wikibase:statements "1"^^xsd:integer ;
+  FILTER NOT EXISTS { ?work ?property ?author . }
