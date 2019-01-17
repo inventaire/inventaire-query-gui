@@ -94,6 +94,7 @@ SELECT ?author ?label WHERE {
   ?author wdt:P31 wd:Q5 .
   ?author rdfs:label ?label .
   FILTER(REGEX(STR(?label), "[^a-zA-Z\\d\\s:\u00C0-\u024F'.-]", 'i')) .
+}
 
 ###
 
