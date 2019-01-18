@@ -3,8 +3,8 @@
 # Authors without work
 SELECT ?author WHERE {
   ?author wdt:P31 wd:Q5 .
-  # '?property' may be: wdt:P50, wdt:P2679, or wdt:P2680
-  FILTER NOT EXISTS { ?work ?property ?author . }
+  # Those properties are the only one used for authors on Inventaire at the moment
+  FILTER NOT EXISTS { ?work wdt:P50|wdt:P2679|wdt:P2680 ?author . }
 }
 
 ###
@@ -49,7 +49,7 @@ SELECT ?edition WHERE {
 
 ###
 
-# Work without edition
+# Works without edition
 SELECT ?work WHERE {
   ?work wdt:P31 wd:Q571 .
   FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
@@ -57,17 +57,9 @@ SELECT ?work WHERE {
 
 ###
 
-# Work without author
+# Works without author
 SELECT ?work WHERE {
   ?work wdt:P31 wd:Q571 .
-  FILTER NOT EXISTS { ?work wdt:P50 ?author . }
-}
-
-###
-
-# Author without work
-SELECT ?author WHERE {
-  ?author wdt:P31 wd:Q5 .
   FILTER NOT EXISTS { ?work wdt:P50 ?author . }
 }
 
