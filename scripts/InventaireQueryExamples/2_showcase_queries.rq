@@ -8,3 +8,18 @@ SELECT ?year (COUNT(?edition) AS ?count) WHERE {
   BIND(str(YEAR(?publication_date)) AS ?year)
 }
 GROUP BY ?year
+
+###
+
+# Find publishers ISBN prefixes from Inventaire editions
+SELECT ?publisher ?publisher_label ?isbn_prefix (COUNT(?edition) AS ?count) WHERE {
+  ?edition wdt:P123 ?publisher .
+  ?edition wdt:P212 ?isbn .
+  BIND((REPLACE(?isbn, "-[0-9]+-[0-9]+$", "")) AS ?isbn_prefix)
+  SERVICE wdq:sparql {
+    ?publisher rdfs:label ?publisher_label .
+    FILTER (LANG(?publisher_label) = 'en')
+  }
+}
+GROUP BY ?publisher ?publisher_label ?isbn_prefix
+ORDER BY DESC(?count)
