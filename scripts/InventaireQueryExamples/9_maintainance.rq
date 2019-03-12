@@ -98,3 +98,20 @@ SELECT ?author WHERE {
           wikibase:labels "1"^^xsd:integer ;
           wikibase:statements "1"^^xsd:integer ;
   FILTER NOT EXISTS { ?work ?property ?author . }
+
+###
+
+# Find authors on same item who are actually one author with reverted names
+# Ex: "Traksmaa, August" and "August Traksmaa"
+# Admin recommanded action: check if authors are the same human, delete one of them
+SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
+  ?item wdt:P50 ?author_a .
+  ?item wdt:P50 ?author_b .
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+
+  # only authors who has a coma can be compared
+  FILTER(CONTAINS(?author_a_label, ","))
+  # filter if author_a label before comma is the end of author_b label
+  FILTER(STRENDS(?author_b_label,STRBEFORE(?author_a_label, ",")))
+}
