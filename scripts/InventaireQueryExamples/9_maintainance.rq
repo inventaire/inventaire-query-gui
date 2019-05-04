@@ -103,7 +103,7 @@ SELECT ?author WHERE {
 
 # Find authors on same item who are actually one author with reverted names
 # Ex: "Traksmaa, August" and "August Traksmaa"
-# Admin recommanded action: check if authors are the same human, delete one of them
+# Recommanded admin action: check if authors are the same human, delete one of them
 SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
   ?item wdt:P50 ?author_a .
   ?item wdt:P50 ?author_b .
@@ -114,4 +114,34 @@ SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
   FILTER(CONTAINS(?author_a_label, ","))
   # filter if author_a label before comma is the end of author_b label
   FILTER(STRENDS(?author_b_label,STRBEFORE(?author_a_label, ",")))
+}
+
+###
+
+# Find homonym co-authors
+# Recommanded admin action: merge homonyms
+SELECT DISTINCT ?author_a ?author_c {
+# Re-run with b and d to find the other couples
+# SELECT DISTINCT ?author_b ?author_d {
+
+  # Find the authors of 2 works
+  ?work_1 wdt:P50 ?author_a .
+  ?work_1 wdt:P50 ?author_b .
+  ?work_2 wdt:P50 ?author_c .
+  ?work_2 wdt:P50 ?author_d .
+
+  # For which authors are homonyms, making it very likely
+  # that those are duplicates that can be merged: a->c b->d
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+  ?author_c rdfs:label ?author_a_label .
+  ?author_d rdfs:label ?author_b_label .
+
+  # Make sure the works are different and that 2 works produce only 1 row
+  FILTER (STR(?work_1) > STR(?work_2))
+  # Make sure the authors are different and that 2 authors produce only 1 row
+  FILTER (STR(?author_a) > STR(?author_b))
+  FILTER (STR(?author_c) > STR(?author_d))
+  # Make sure that the homonym authors aren't just the same authors already
+  FILTER (?author_a != ?author_c && ?author_b != ?author_d)
 }
