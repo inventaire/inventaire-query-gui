@@ -145,3 +145,17 @@ SELECT DISTINCT ?author_a ?author_c {
   # Make sure that the homonym authors aren't just the same authors already
   FILTER (?author_a != ?author_c && ?author_b != ?author_d)
 }
+
+###
+
+# Find homonyms authors within a work
+# Recommanded admin action: merge homonyms (?author_b -> ?author_a)
+SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
+  ?work wdt:P50 ?author_a .
+  ?work wdt:P50 ?author_b .
+  FILTER (STR(?author_a) != STR(?author_b))
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+  BIND(REPLACE(?author_a_label, "\\.", "") AS ?author_a_cleaned_label)
+  FILTER (?author_a_cleaned_label = ?author_b_label)
+}
