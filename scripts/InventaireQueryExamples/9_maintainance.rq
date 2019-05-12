@@ -118,11 +118,33 @@ SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
 
 ###
 
-# Find homonym co-authors
+# Find homonym co-authors (Inventaire and Wikidata)
 # Recommanded admin action: merge homonyms
-SELECT DISTINCT ?author_a ?author_c {
-# Re-run with b and d to find the other couples
-# SELECT DISTINCT ?author_b ?author_d {
+SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
+  # Find co-authors of a work
+  ?work_1 wdt:P50 ?author_a .
+  ?work_1 wdt:P50 ?author_b .
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+
+  FILTER (STR(?author_a) > STR(?author_b))
+
+  SERVICE wdq:sparql {
+    # Who's names match those of co-authors of another work
+    ?work_2 wdt:P50 ?author_c .
+    ?work_2 wdt:P50 ?author_d .
+    ?author_c rdfs:label ?author_a_label .
+    ?author_d rdfs:label ?author_b_label .
+    # Make sure the authors are different and that 2 authors produce only 1 row
+    FILTER (STR(?author_c) > STR(?author_d))
+  }
+}
+
+###
+
+# Find homonym co-authors (Inventaire only)
+# Recommanded admin action: merge homonyms
+SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 
   # Find the authors of 2 works
   ?work_1 wdt:P50 ?author_a .
@@ -149,13 +171,14 @@ SELECT DISTINCT ?author_a ?author_c {
 ###
 
 # Find homonyms authors within a work
-# Recommanded admin action: merge homonyms (?author_b -> ?author_a)
+# Recommanded admin action: merge homonyms
 SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
-  FILTER (STR(?author_a) != STR(?author_b))
+  FILTER (STR(?author_a) > STR(?author_b))
   ?author_a rdfs:label ?author_a_label .
   ?author_b rdfs:label ?author_b_label .
   BIND(REPLACE(?author_a_label, "\\.", "") AS ?author_a_cleaned_label)
-  FILTER (?author_a_cleaned_label = ?author_b_label)
+  BIND(REPLACE(?author_b_label, "\\.", "") AS ?author_b_cleaned_label)
+  FILTER (?author_a_cleaned_label = ?author_b_cleaned_label)
 }
