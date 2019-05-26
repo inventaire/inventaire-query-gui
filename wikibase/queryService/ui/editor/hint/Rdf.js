@@ -87,9 +87,8 @@ wikibase.queryService.ui.editor.hint = wikibase.queryService.ui.editor.hint || {
 			return deferred.resolve( this._getHintCompletion( lineNum, currentWord, prefix, list ) )
 					.promise();
 		}
-
 		if ( entityPrefixes[prefix] ) { // search entity
-			this._searchEntities( term, entityPrefixes[prefix] ).done(
+			this._searchEntities( term, entityPrefixes[prefix], prefix ).done(
 					function( list ) {
 						return deferred.resolve( self._getHintCompletion( lineNum, currentWord,
 								prefix, list ) );
@@ -124,11 +123,11 @@ wikibase.queryService.ui.editor.hint = wikibase.queryService.ui.editor.hint || {
 		return completion;
 	};
 
-	SELF.prototype._searchEntities = function( term, type ) {
+	SELF.prototype._searchEntities = function( term, type, prefix ) {
 		var entityList = [],
 			deferred = $.Deferred();
 
-		this._api.searchEntities( term, type ).done( function( data ) {
+		this._api.searchEntities( term, type, null, prefix ).done( function( data ) {
 			$.each( data.search, function( key, value ) {
 				entityList.push( {
 					className: 'wikibase-rdf-hint',
@@ -136,12 +135,11 @@ wikibase.queryService.ui.editor.hint = wikibase.queryService.ui.editor.hint || {
 					render: function( element, self, data ) {
 						var bdi = document.createElement( 'bdi' );
 						element.appendChild( document.createTextNode( value.label ) );
-						element.appendChild( document.createTextNode( ' (' ) );
 						bdi.textContent = value.id;
 						element.appendChild( bdi );
-						element.appendChild( document.createTextNode( ') ' ) );
-						element.appendChild( document.createTextNode( value.description ) );
-						element.appendChild( document.createTextNode( '\n' ) );
+						var description = document.createElement( 'description' );
+						description.textContent = value.description;
+						element.appendChild( description );
 					}
 				} );
 			} );

@@ -1,6 +1,10 @@
 var wikibase = wikibase || {};
 wikibase.queryService = wikibase.queryService || {};
 wikibase.queryService.api = wikibase.queryService.api || {};
+var invHost = 'https://inventaire.io'
+var invTypes = 'works|humans|series'
+Promise.prototype.done = Promise.prototype.then
+Promise.prototype.fail = Promise.prototype.catch
 
 wikibase.queryService.api.Wikibase = ( function( $ ) {
 	'use strict';
@@ -78,23 +82,42 @@ wikibase.queryService.api.Wikibase = ( function( $ ) {
 	 *
 	 * @return {jQuery.Promise}
 	 */
-	SELF.prototype.searchEntities = function( term, type, language ) {
-		var query = SEARCH_ENTITES;
-		query.search = term;
-
-		if ( type ) {
-			query.type = type;
-		}
-		if ( this._language || language ) {
-			query.language = language || this._language;
-			query.uselang = language || this._language;
-		} else {
-			query.language = LANGUAGE;
-			query.uselang = LANGUAGE;
-		}
-
-		return this._query( query );
+	SELF.prototype.searchEntities = function( term, type, language, prefix ) {
+		language = language || this._language || LANGUAGE;
+		if (prefix === 'inv') return searchByPrefix.inv(term, language)
+		else return searchByPrefix.wd.call(this, term, type, language)
 	};
+
+	var searchByPrefix = {
+		wd: function (term, type, language) {
+			var query = SEARCH_ENTITES;
+			query.search = term;
+
+			if ( type ) {
+				query.type = type;
+			}
+
+			query.language = query.uselang = language
+
+			return this._query( query );
+		},
+		inv: function (term, language) {
+			return fetch(invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50')
+			.then(function (res) {
+				return res.json().results
+				.filter(function (result) { return result.uri.startsWith('inv') })
+				.map(formatInvResult(term))
+			})
+			.then(function (formattedResults) { return { search: formattedResults } })
+		}
+	}
+
+	var formatInvResult = function (term) {
+		return function (result) {
+			result.description = result.type.replace(/s$/, '')
+			return result
+		}
+	}
 
 	/**
 	 * List of supported languages

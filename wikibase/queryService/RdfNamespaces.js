@@ -55,6 +55,7 @@ wikibase.queryService.RdfNamespaces = {};
 	};
 
 	RdfNamespaces.ENTITY_TYPES = {
+		'http://inventaire.io/entity/': 'item',
 		'http://inventaire.io/prop/direct/': 'property',
 		'http://www.wikidata.org/prop/direct/': 'property',
 		'http://www.wikidata.org/prop/': 'property',
