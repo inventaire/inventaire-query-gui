@@ -118,7 +118,7 @@ SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
 
 ###
 
-# Find homonym co-authors (Inventaire and Wikidata)
+# Find double homonym co-authors (Inventaire and Wikidata)
 # Recommanded admin action: merge homonyms
 SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
   # Find co-authors of a work
@@ -164,8 +164,26 @@ SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
   # Make sure the authors are different and that 2 authors produce only 1 row
   FILTER (STR(?author_a) > STR(?author_b))
   FILTER (STR(?author_c) > STR(?author_d))
-  # Make sure that the homonym authors aren't just the same authors already
-  FILTER (?author_a != ?author_c && ?author_b != ?author_d)
+  # Make sure that the homonym authors aren't just all the same authors already
+  # but keep cases where one of the author is already deduplicated but not the other
+  FILTER (?author_a != ?author_c || ?author_b != ?author_d)
+}
+
+###
+
+# Find homonym co-authors (Inventaire and Wikidata)
+# Recommanded admin action: merge homonyms
+SELECT DISTINCT ?author_b ?author_c {
+  # Find the authors of 2 works
+  ?work_1 wdt:P50 ?author_a .
+  ?work_1 wdt:P50 ?author_b .
+  ?work_2 wdt:P50 ?author_a .
+  ?work_2 wdt:P50 ?author_c .
+  ?author_b rdfs:label ?author_b_label .
+  FILTER NOT EXISTS { ?author_c wdt:P31 ?type }
+  SERVICE wdq:sparql {
+    ?author_c rdfs:label ?author_b_label .
+  }
 }
 
 ###
