@@ -233,3 +233,45 @@ SELECT ?author_a ?author_b {
   # BIND(REPLACE(?isbn13h_b, '-\\d+-\\d+$', '') AS ?isbn_publisher_prefix_b)
   # FILTER(?isbn_publisher_prefix_a = ?isbn_publisher_prefix_b)
 }
+
+###
+
+# Find coauthors with identical names
+# Recommanded admin action: delete one
+SELECT DISTINCT ?author_a ?author_b {
+  ?work wdt:P50 ?author_a .
+  ?work wdt:P50 ?author_b .
+  FILTER(STR(?author_a) > STR(?author_b))
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+  FILTER(?author_b_label = ?author_a_label)
+}
+
+###
+
+# Find coauthors who's names are partly duplicated
+# like "First name" and "First name Last name"
+# Recommanded admin action: delete one
+SELECT DISTINCT ?author_a ?author_a_label ?author_b ?author_b_label {
+  ?work wdt:P50 ?author_a .
+  ?work wdt:P50 ?author_b .
+  FILTER(?author_a != ?author_b)
+  ?author_a rdfs:label ?author_a_label .
+  ?author_b rdfs:label ?author_b_label .
+
+  # Use the query above to easily handle that case
+  FILTER(?author_b_label != ?author_a_label)
+
+  FILTER(STRSTARTS(?author_b_label, ?author_a_label))
+}
+
+###
+
+# Find entities with labels containing Combining Diacritical Marks
+# Recommanded admin action: fix in bulk in database
+SELECT ?item ?lang ?label WHERE {
+  ?item rdfs:label ?label .
+  BIND(LANG(?label) AS ?lang)
+  # see https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
+  FILTER regex(?label, "[\\u0300-\\u036F]")
+}
