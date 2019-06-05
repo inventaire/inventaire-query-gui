@@ -1,4 +1,4 @@
-# Maintainance
+# Maintenance
 
 # Authors without work
 SELECT ?author WHERE {
