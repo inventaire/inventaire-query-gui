@@ -5,7 +5,7 @@
   "scripts": {
     "start": "http-server -o",
     "test": "grunt test",
-    "build": "npm run update-inventaire-examples && grunt build",
+    "build": "npm run update-inventaire-examples && grunt only_build",
     "deploy": "grunt deploy",
     "update-inventaire-examples": "./scripts/build_inventaire_queries_examples"
   },
