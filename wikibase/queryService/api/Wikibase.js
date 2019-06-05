@@ -96,8 +96,9 @@ wikibase.queryService.api.Wikibase = ( function( $ ) {
 		},
 		inv: function( term, language ) {
 			return fetch( invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50' )
-			.then( function( res ) {
-				return res.json().results
+			.then( function( res ) { return res.json(); } )
+			.then( function ( res ) {
+				return res.results
 				.filter( function( result ) { return result.uri.startsWith( 'inv' ); } )
 				.map( formatInvResult( term ) );
 			} )
