@@ -1,10 +1,11 @@
 var wikibase = wikibase || {};
 wikibase.queryService = wikibase.queryService || {};
 wikibase.queryService.api = wikibase.queryService.api || {};
-var invHost = 'https://inventaire.io'
-var invTypes = 'works|humans|series'
-Promise.prototype.done = Promise.prototype.then
-Promise.prototype.fail = Promise.prototype.catch
+var invHost = 'https://inventaire.io';
+var invTypes = 'works|humans|series';
+var Promise = window.Promise;
+Promise.prototype.done = Promise.prototype.then;
+Promise.prototype.fail = Promise.prototype.catch;
 
 wikibase.queryService.api.Wikibase = ( function( $ ) {
 	'use strict';
@@ -73,6 +74,37 @@ wikibase.queryService.api.Wikibase = ( function( $ ) {
 	 */
 	SELF.prototype._language = null;
 
+	var formatInvResult = function( term ) {
+		return function( result ) {
+			result.description = result.type.replace( /s$/, '' );
+			return result;
+		};
+	};
+
+	var searchByPrefix = {
+		wd: function( term, type, language ) {
+			var query = SEARCH_ENTITES;
+			query.search = term;
+
+			if ( type ) {
+				query.type = type;
+			}
+
+			query.language = query.uselang = language;
+
+			return this._query( query );
+		},
+		inv: function( term, language ) {
+			return fetch( invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50' )
+			.then( function( res ) {
+				return res.json().results
+				.filter( function( result ) { return result.uri.startsWith( 'inv' ); } )
+				.map( formatInvResult( term ) );
+			} )
+			.then( function( formattedResults ) { return { search: formattedResults }; } );
+		}
+	};
+
 	/**
 	 * Search an entity with using wbsearchentities
 	 *
@@ -84,47 +116,19 @@ wikibase.queryService.api.Wikibase = ( function( $ ) {
 	 */
 	SELF.prototype.searchEntities = function( term, type, language, prefix ) {
 		language = language || this._language || LANGUAGE;
-		if (prefix === 'inv') return searchByPrefix.inv(term, language)
-		else return searchByPrefix.wd.call(this, term, type, language)
+		if ( prefix === 'inv' ) {
+			return searchByPrefix.inv( term, language );
+		} else {
+			return searchByPrefix.wd.call( this, term, type, language );
+		}
 	};
-
-	var searchByPrefix = {
-		wd: function (term, type, language) {
-			var query = SEARCH_ENTITES;
-			query.search = term;
-
-			if ( type ) {
-				query.type = type;
-			}
-
-			query.language = query.uselang = language
-
-			return this._query( query );
-		},
-		inv: function (term, language) {
-			return fetch(invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50')
-			.then(function (res) {
-				return res.json().results
-				.filter(function (result) { return result.uri.startsWith('inv') })
-				.map(formatInvResult(term))
-			})
-			.then(function (formattedResults) { return { search: formattedResults } })
-		}
-	}
-
-	var formatInvResult = function (term) {
-		return function (result) {
-			result.description = result.type.replace(/s$/, '')
-			return result
-		}
-	}
 
 	/**
 	 * List of supported languages
 	 *
 	 * @return {jQuery.Promise}
 	 */
-	SELF.prototype.getLanguages = function() {
+	SELF.prototype.getLanguages = function( ) {
 		return this._query( QUERY_LANGUGES );
 	};
 

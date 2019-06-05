@@ -5,6 +5,9 @@
 		"declaration-no-important": null,
 		"declaration-property-value-blacklist": null,
 		"no-descending-specificity": null,
-		"selector-no-id": null
+		"selector-type-no-unknown": null,
+    "no-duplicate-selectors": null,
+    "function-url-quotes": null,
+    "selector-no-id": null
 	}
 }

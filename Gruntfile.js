@@ -12,7 +12,11 @@ module.exports = function( grunt ) {
 				jshintrc: true
 			},
 			all: [
-					'**/*.js', '!dist/**', '!' + buildFolder + '/**', '!target/**'
+					'**/*.js',
+					'!dist/**',
+					'!' + buildFolder + '/**',
+					'!target/**',
+					'!wikibase/InventaireQueryExamples.js'
 			]
 		},
 		jscs: {
