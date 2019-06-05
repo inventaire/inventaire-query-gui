@@ -98,6 +98,7 @@ SELECT ?author WHERE {
           wikibase:labels "1"^^xsd:integer ;
           wikibase:statements "1"^^xsd:integer ;
   FILTER NOT EXISTS { ?work ?property ?author . }
+}
 
 ###
 
