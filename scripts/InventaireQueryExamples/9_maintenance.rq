@@ -90,8 +90,8 @@ SELECT ?author ?label WHERE {
 
 ###
 
-# Authors that aren't used in any claim and where never edited
-# Recommanded admin action: delete
+# Authors that aren't used in any claim and were never edited
+# recommended admin action: delete
 SELECT ?author WHERE {
   ?author wdt:P31 wd:Q5 ;
           schema:version "2"^^xsd:integer ;
@@ -104,7 +104,7 @@ SELECT ?author WHERE {
 
 # Find authors on same item who are actually one author with reverted names
 # Ex: "Traksmaa, August" and "August Traksmaa"
-# Recommanded admin action: check if authors are the same human, delete one of them
+# recommended admin action: check if authors are the same human, delete one of them
 SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
   ?item wdt:P50 ?author_a .
   ?item wdt:P50 ?author_b .
@@ -120,7 +120,7 @@ SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
 ###
 
 # Find double homonym co-authors (Inventaire and Wikidata)
-# Recommanded admin action: merge homonyms
+# recommended admin action: merge homonyms
 SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
   # Find co-authors of a work
   ?work_1 wdt:P50 ?author_a .
@@ -144,7 +144,7 @@ SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 ###
 
 # Find homonym co-authors (Inventaire only)
-# Recommanded admin action: merge homonyms
+# recommended admin action: merge homonyms
 SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 
   # Find the authors of 2 works
@@ -173,7 +173,7 @@ SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 ###
 
 # Find homonym co-authors (Inventaire and Wikidata)
-# Recommanded admin action: merge homonyms
+# recommended admin action: merge homonyms
 SELECT DISTINCT ?author_b ?author_c {
   # Find the authors of 2 works
   ?work_1 wdt:P50 ?author_a .
@@ -190,7 +190,7 @@ SELECT DISTINCT ?author_b ?author_c {
 ###
 
 # Find homonyms authors within a work
-# Recommanded admin action: merge homonyms
+# recommended admin action: merge homonyms
 SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -205,7 +205,7 @@ SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
 ###
 
 # Find homonyms authors that have the same publisher
-# Recommanded admin action: merge homonyms
+# recommended admin action: merge homonyms
 SELECT ?author_a ?author_b {
 
   # Find homonym authors
@@ -238,7 +238,7 @@ SELECT ?author_a ?author_b {
 ###
 
 # Find coauthors with identical names
-# Recommanded admin action: delete one
+# recommended admin action: delete one
 SELECT DISTINCT ?author_a ?author_b {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -252,7 +252,7 @@ SELECT DISTINCT ?author_a ?author_b {
 
 # Find coauthors who's names are partly duplicated
 # like "First name" and "First name Last name"
-# Recommanded admin action: delete one
+# recommended admin action: delete one
 SELECT DISTINCT ?author_a ?author_a_label ?author_b ?author_b_label {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -269,7 +269,7 @@ SELECT DISTINCT ?author_a ?author_a_label ?author_b ?author_b_label {
 ###
 
 # Find entities with labels containing Combining Diacritical Marks
-# Recommanded admin action: fix in bulk in database
+# recommended admin action: fix in bulk in database
 SELECT ?item ?lang ?label WHERE {
   ?item rdfs:label ?label .
   BIND(LANG(?label) AS ?lang)
