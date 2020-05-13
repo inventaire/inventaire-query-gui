@@ -276,3 +276,19 @@ SELECT ?item ?lang ?label WHERE {
   # see https://en.wikipedia.org/wiki/Combining_Diacritical_Marks
   FILTER regex(?label, "[\\u0300-\\u036F]")
 }
+
+###
+
+# Edition with a isbn country group code different from publisher's country of origin
+# recommended admin action: if isbn group code is inconsistent, check if edition isbn is right
+SELECT ?edition ?isbn_group WHERE {
+  ?edition wdt:P123 ?publisher .
+  ?edition wdt:P212 ?isbn .
+  SERVICE wdq:sparql {
+    ?publisher wdt:P17 ?country .
+    ?country wdt:P3097 ?publisher_group .
+  }
+  BIND((REPLACE(?isbn, "-[0-9]+-[0-9]+-[0-9]+$", "")) AS ?isbn_group)
+  FILTER (STR(?publisher_group) < STR(?isbn_group))
+}
+GROUP BY ?edition ?isbn_group
