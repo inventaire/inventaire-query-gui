@@ -2,7 +2,7 @@ var wikibase = wikibase || {};
 wikibase.queryService = wikibase.queryService || {};
 wikibase.queryService.api = wikibase.queryService.api || {};
 var invHost = 'https://inventaire.io';
-var invTypes = 'works|humans|series';
+var invTypes = 'works|humans|genres|publishers|series|collections';
 var Promise = window.Promise;
 Promise.prototype.done = Promise.prototype.then;
 Promise.prototype.fail = Promise.prototype.catch;
@@ -95,11 +95,10 @@ wikibase.queryService.api.Wikibase = ( function( $ ) {
 			return this._query( query );
 		},
 		inv: function( term, language ) {
-			return fetch( invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50' )
+			return fetch( invHost + '/api/search?action=search&types=' + invTypes + '&search=' + term + '&lang=' + language + '&limit=50&filter=inv' )
 			.then( function( res ) { return res.json(); } )
 			.then( function ( res ) {
 				return res.results
-				.filter( function( result ) { return result.uri.startsWith( 'inv' ); } )
 				.map( formatInvResult( term ) );
 			} )
 			.then( function( formattedResults ) { return { search: formattedResults }; } );
