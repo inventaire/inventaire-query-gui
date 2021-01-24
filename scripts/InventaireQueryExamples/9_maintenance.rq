@@ -51,7 +51,7 @@ SELECT ?edition WHERE {
 
 # Works without edition
 SELECT ?work WHERE {
-  ?work wdt:P31 wd:Q571 .
+  ?work wdt:P31 wd:Q47461344 .
   FILTER NOT EXISTS { ?edition wdt:P629 ?work . }
 }
 
@@ -59,7 +59,7 @@ SELECT ?work WHERE {
 
 # Works without author
 SELECT ?work WHERE {
-  ?work wdt:P31 wd:Q571 .
+  ?work wdt:P31 wd:Q47461344 .
   FILTER NOT EXISTS { ?work wdt:P50 ?author . }
 }
 
