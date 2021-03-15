@@ -91,7 +91,7 @@ SELECT ?author ?label WHERE {
 ###
 
 # Authors that aren't used in any claim and were never edited
-# recommended admin action: delete
+# Recommended admin action: delete
 SELECT ?author WHERE {
   ?author wdt:P31 wd:Q5 ;
           schema:version "2"^^xsd:integer ;
@@ -104,7 +104,7 @@ SELECT ?author WHERE {
 
 # Find authors on same item who are actually one author with reverted names
 # Ex: "Traksmaa, August" and "August Traksmaa"
-# recommended admin action: check if authors are the same human, delete one of them
+# Recommended admin action: check if authors are the same human, delete one of them
 SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
   ?item wdt:P50 ?author_a .
   ?item wdt:P50 ?author_b .
@@ -120,7 +120,7 @@ SELECT DISTINCT ?author_a ?author_a_label ?item WHERE {
 ###
 
 # Find double homonym co-authors (Inventaire and Wikidata)
-# recommended admin action: merge homonyms
+# Recommended admin action: merge homonyms
 SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
   # Find co-authors of a work
   ?work_1 wdt:P50 ?author_a .
@@ -144,7 +144,7 @@ SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 ###
 
 # Find homonym co-authors (Inventaire only)
-# recommended admin action: merge homonyms
+# Recommended admin action: merge homonyms
 SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 
   # Find the authors of 2 works
@@ -173,7 +173,7 @@ SELECT DISTINCT ?author_a ?author_b ?author_c ?author_d {
 ###
 
 # Find homonym co-authors (Inventaire and Wikidata)
-# recommended admin action: merge homonyms
+# Recommended admin action: merge homonyms
 SELECT DISTINCT ?author_b ?author_c {
   # Find the authors of 2 works
   ?work_1 wdt:P50 ?author_a .
@@ -190,7 +190,7 @@ SELECT DISTINCT ?author_b ?author_c {
 ###
 
 # Find homonyms authors within a work
-# recommended admin action: merge homonyms
+# Recommended admin action: merge homonyms
 SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -205,7 +205,7 @@ SELECT ?author_a ?author_b ?author_a_label ?author_b_label  {
 ###
 
 # Find homonyms authors that have the same publisher
-# recommended admin action: merge homonyms
+# Recommended admin action: merge homonyms
 SELECT ?author_a ?author_b {
 
   # Find homonym authors
@@ -238,7 +238,7 @@ SELECT ?author_a ?author_b {
 ###
 
 # Find coauthors with identical names
-# recommended admin action: delete one
+# Recommended admin action: delete one
 SELECT DISTINCT ?author_a ?author_b {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -252,7 +252,7 @@ SELECT DISTINCT ?author_a ?author_b {
 
 # Find coauthors who's names are partly duplicated
 # like "First name" and "First name Last name"
-# recommended admin action: delete one
+# Recommended admin action: delete one
 SELECT DISTINCT ?author_a ?author_a_label ?author_b ?author_b_label {
   ?work wdt:P50 ?author_a .
   ?work wdt:P50 ?author_b .
@@ -269,7 +269,7 @@ SELECT DISTINCT ?author_a ?author_a_label ?author_b ?author_b_label {
 ###
 
 # Find entities with labels containing Combining Diacritical Marks
-# recommended admin action: fix in bulk in database
+# Recommended admin action: fix in bulk in database
 SELECT ?item ?lang ?label WHERE {
   ?item rdfs:label ?label .
   BIND(LANG(?label) AS ?lang)
@@ -280,7 +280,7 @@ SELECT ?item ?lang ?label WHERE {
 ###
 
 # Edition with a isbn country group code different from publisher's country of origin
-# recommended admin action: if isbn group code is inconsistent, check if edition isbn is right
+# Recommended admin action: if isbn group code is inconsistent, check if edition isbn is right
 SELECT ?edition ?isbn_group WHERE {
   ?edition wdt:P123 ?publisher .
   ?edition wdt:P212 ?isbn .
@@ -292,3 +292,27 @@ SELECT ?edition ?isbn_group WHERE {
   FILTER (STR(?publisher_group) < STR(?isbn_group))
 }
 GROUP BY ?edition ?isbn_group
+
+
+###
+# Book covers used on many books, and thus likely to be placeholders
+# Recommended admin action:
+# - check validity (but this is very likely to be garbage created by dataseed)
+# - remove image claims
+# - add images hashes to the list of banned image hashes
+SELECT ?count ?imagehash ?inspect {
+  {
+    # Count the number of different editions sharing an image
+    SELECT (COUNT(?edition) AS ?count) ?imagehash {
+      {
+        SELECT DISTINCT ?edition ?imagehash {
+          ?edition invp:P2 ?imagehash .
+        }
+      }
+    }
+    GROUP BY ?imagehash
+  }
+  FILTER(?count > 10)
+  BIND(URI(CONCAT("/#DESCRIBE%20%3C", STR(?imagehash), "%3E")) AS ?inspect)
+}
+ORDER BY DESC(?count)
