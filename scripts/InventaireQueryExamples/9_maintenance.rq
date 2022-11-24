@@ -65,7 +65,7 @@ SELECT ?work WHERE {
 
 ###
 
-# type of Wikidata entities used by Inventaire items
+# Type of Wikidata entities used by Inventaire items
 SELECT ?type ?typeLabel (COUNT(?item) AS ?count ) WHERE {
   hint:Query hint:optimizer "None".
   ?item wdt:P1574 ?entity .
@@ -295,6 +295,7 @@ GROUP BY ?edition ?isbn_group
 
 
 ###
+
 # Book covers used on many books, and thus likely to be placeholders
 # Recommended admin action:
 # - check validity (but this is very likely to be garbage created by dataseed)
@@ -316,3 +317,64 @@ SELECT ?count ?imagehash ?inspect {
   BIND(URI(CONCAT("/#DESCRIBE%20%3C", STR(?imagehash), "%3E")) AS ?inspect)
 }
 ORDER BY DESC(?count)
+
+
+###
+
+# Entities sharing an external id
+# Recommended admin action: merge
+SELECT ?entity_a ?entity_b ?external_id_property ?id WHERE {
+  VALUES (?external_id_property) {
+    (wdt:P213) # ISNI
+    (wdt:P214) # VIAF id
+    (wdt:P227) # GND ID
+    (wdt:P243) # OCLC control number
+    (wdt:P244) # Library of Congress authority ID
+    (wdt:P268) # BNF id
+    (wdt:P269) # SUDOC authorities ID
+    (wdt:P496) # ORCID ID
+    (wdt:P648) # Open Library id
+    (wdt:P675) # Google Books ID
+    (wdt:P950) # Biblioteca Nacional de España ID
+    (wdt:P1025) # SUDOC editions
+    (wdt:P1044) # SWB editions
+    (wdt:P1006) # Dutch National for Author Names ID
+    (wdt:P1085) # Librarything work ID
+    (wdt:P1143) # BN (Argentine) editions
+    (wdt:P1144) # Library of Congress Control Number (bibliographic)
+    (wdt:P1182) # LIBRIS editions
+    (wdt:P1274) # ISFDB title ID
+    (wdt:P1292) # DNB editions
+    (wdt:P1844) # HathiTrust ID
+    (wdt:P1938) # Project Gutenberg author ID
+    (wdt:P1960) # Google Scholar author ID
+    (wdt:P1982) # Anime News Network person ID
+    (wdt:P1983) # Anime News Network company ID
+    (wdt:P1984) # Anime News Network manga ID
+    (wdt:P2002) # Twitter account
+    (wdt:P2003) # Instagram username
+    (wdt:P2013) # Facebook profile id
+    (wdt:P2397) # YouTube channel ID
+    (wdt:P2963) # GoodReads author ID
+    (wdt:P2969) # GoodReads book ID
+    (wdt:P3035) # ISBN publisher prefix
+    (wdt:P3184) # Czech National Bibliography book ID
+    (wdt:P3630) # Babelio author ID
+    (wdt:P3631) # Babelio work ID
+    (wdt:P4033) # Mastodon address
+    (wdt:P4285) # Theses.fr person ID
+    (wdt:P4084) # MyAnimeList people ID
+    (wdt:P4087) # MyAnimeList manga ID
+    (wdt:P5361) # BNB person ID
+    (wdt:P5491) # BD Gest' author ID
+    (wdt:P5331) # OCLC work ID
+    (wdt:P5199) # British Library system number
+    (wdt:P5571) # NooSFere book ID
+    (wdt:P7400) # Librarything author ID
+    (wdt:P8383) # Goodreads work ID
+  }
+  ?entity_a ?external_id_property ?id .
+  ?entity_b ?external_id_property ?id .
+  FILTER(?entity_a != ?entity_b)
+  FILTER(STR(?entity_a) > STR(?entity_b))
+}
