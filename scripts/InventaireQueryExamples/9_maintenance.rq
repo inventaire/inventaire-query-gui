@@ -378,3 +378,16 @@ SELECT ?entity_a ?entity_b ?external_id_property ?id WHERE {
   FILTER(?entity_a != ?entity_b)
   FILTER(STR(?entity_a) > STR(?entity_b))
 }
+
+###
+
+# Collections with editions which have a different publisher
+# than the collection's one
+
+SELECT DISTINCT ?collection WHERE {
+  ?edition wdt:P195 ?collection .
+  ?collection wdt:P123 ?collectionPublisher.
+  ?edition wdt:P123 ?editionPublisher.
+  FILTER NOT EXISTS { ?collection wdt:P123 ?editionPublisher }
+  FILTER(STR(?collectionPublisher) > STR(?editionPublisher))
+}
