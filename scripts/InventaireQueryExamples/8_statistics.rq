@@ -46,6 +46,18 @@ GROUP BY ?author
 
 ###
 
+# Number of authors per work
+SELECT ?authorsCount (COUNT(?authorsCount) AS ?works) WHERE {
+  SELECT ?work (COUNT(?author) AS ?authorsCount) WHERE {
+    ?work wdt:P50 ?author .
+  }
+  GROUP BY ?work
+}
+GROUP BY ?authorsCount
+ORDER BY DESC(?works)
+
+###
+
 # Count works that are part of a serie
 SELECT (COUNT(?work) AS ?count) WHERE {
   ?work wdt:P179 ?serie .
